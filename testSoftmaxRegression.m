@@ -21,24 +21,19 @@ plot(x5(:,1), x5(:,2), 'm.'); hold off;
 rng('default');
 lambda = 1e-3;
 
-% sample = [x1(1:120, :)', x2(1:120, :)', x3(1:120, :)', ...
-%     x4(1:120, :)', x5(1:120, :)'];
-% sample = [sample; ones(1, 600)];
 sample = zeros(3, 120, 5);
 sample(:, :, 1) = [x1(1:120, :), ones(120, 1)]';
-sample(:, :, 2) = [x1(1:120, :), ones(120, 1)]';
-sample(:, :, 3) = [x1(1:120, :), ones(120, 1)]';
-sample(:, :, 4) = [x1(1:120, :), ones(120, 1)]';
-sample(:, :, 5) = [x1(1:120, :), ones(120, 1)]';
-
+sample(:, :, 2) = [x2(1:120, :), ones(120, 1)]';
+sample(:, :, 3) = [x3(1:120, :), ones(120, 1)]';
+sample(:, :, 4) = [x4(1:120, :), ones(120, 1)]';
+sample(:, :, 5) = [x5(1:120, :), ones(120, 1)]';
 
 test = [x1(121:end, :)', x2(121:end, :)', x3(121:end, :)', ...
     x4(121:end, :)', x5(121:end, :)'];
 test = [test; ones(1, 400)];
 
 pred = softmaxRegression(sample, lambda);
-prob = zeros(5, 400);
-for j = 1:5
-    prob(j,:) = pred(j, test);
-end
-[r, c] = find(prob == max(prob));
+label = pred(test);
+corr = ones(80, 1) .* (1:5);
+corr = corr(:);
+pre = sum(r == corr) / 400
